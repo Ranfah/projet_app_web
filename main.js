@@ -1,7 +1,8 @@
 const http = require('http')
-const navbar = require('./pages/components/navbar')
-const sql = require('mysql')
-const {getData, insertData} = require('./services/db.js')
+const login = require('./pages/components/login')
+const register = require('./pages/components/register')
+const fs = require('fs')
+const {getData, insertData,getDataUsername} = require('./services/db.js')
 
 
 
@@ -10,15 +11,29 @@ const PORT = 8000
 
 const serveur = http.createServer(async(req,res)=>{
     if(req.url ==='/'){
+        const content = login
         res.setHeader('Content-Type','text/html')
         res.statusCode = 200
-        res.end(navbar)
+        let html = fs.readFileSync('./index.html','utf-8')
+        html = html.replace('{{content}}',content)
+        res.end(html)
+    }
+    if(req.url ==='/register'){
+        const content = register
+        res.setHeader('Content-Type','text/html')
+        res.statusCode = 200
+        let html = fs.readFileSync('./index.html','utf-8')
+        html = html.replace('{{content}}',content)
+        res.end(html)
     }
     if(req.url === '/db'){
        getData(req,res)
     }
     if(req.url === '/insert'){
         insertData(req,res)
+     }
+     if(req.url === '/username'){
+        getDataUsername(req,res)
      }
 })
 

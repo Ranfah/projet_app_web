@@ -14,7 +14,6 @@ const getData = (req,res)=>{
         if(err) return res.end(JSON.stringify(err));
         return res.end(JSON.stringify(data));
     })
-
 }
 const insertData = (req,res)=>{
     const sql = 'INSERT INTO user(username,usermail,password) VALUES("vanessa","vanne@gmail.com","123456")'
@@ -23,6 +22,13 @@ const insertData = (req,res)=>{
         return res.end('ok')
     })
 }
-module.exports = {getData,insertData}
+const getDataUsername = (req,res)=>{
+    const sql = 'SELECT username FROM user'
+    db.query(sql,(err,data)=>{
+        if(err) return res.end(JSON.stringify(err))
+        return res.end(JSON.stringify(data))
+    })
+}
+module.exports = {getData,insertData,getDataUsername}
 
 
