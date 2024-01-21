@@ -8,18 +8,20 @@ const db = mysql.createConnection({
     database:`admin`
 })
 
-const getData = (req,res)=>{
-    const sql = 'SELECT * FROM user'
+const getData =  (req,res,dataReq)=>{
+    const sql = 'SELECT usermail,password FROM user'
     db.query(sql,(err,data)=>{
-        if(err) return res.end(JSON.stringify(err));
-        return res.end(JSON.stringify(data));
+        if(err) return console.log(err);
+        let result = data.filter(element => element.usermail === dataReq.email && element.password === dataReq.password)
+        if(result.length >0){return res.end(data)}else{return res.end('KO')}; 
     })
 }
-const insertData = (req,res)=>{
-    const sql = 'INSERT INTO user(username,usermail,password) VALUES("vanessa","vanne@gmail.com","123456")'
-    db.query(sql,(err,data)=>{
-        if(err) return res.end(JSON.stringify(err))
-        return res.end('ok')
+const insertData = (req,res,data)=>{
+    const sql = 'INSERT INTO user(username,usermail,password) VALUES (?)'
+    let values = [data.username,data.usmail,data.password]
+    db.query(sql,[values],(err,data)=>{
+        if(err) return res.end(err);
+        return res.end('ok');
     })
 }
 const getDataUsername = (req,res)=>{
@@ -29,6 +31,6 @@ const getDataUsername = (req,res)=>{
         return res.end(JSON.stringify(data))
     })
 }
-module.exports = {getData,insertData,getDataUsername}
+module.exports = {getData,insertData,getDataUsername,db}
 
 
