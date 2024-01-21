@@ -1,6 +1,6 @@
-#Installez les dependances
+# Installez les dependances
 npm i
 
-#Lancez le serveur
+# Lancez le serveur
 npm start
 
